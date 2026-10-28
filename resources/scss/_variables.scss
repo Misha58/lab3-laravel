@@ -1,0 +1,44 @@
+// Переменные (https://coolors.co/f4d35e-ee964b-f95738-0d3b66-faf0ca)
+$color-bg: #FAF0CA;          // фон страницы, подвала
+$color-header-bg: #0D3B66;   // фон шапки
+$color-header-text: #FAF0CA; // текст в шапке
+$color-accent: #EE964B;      // логотип, кнопка
+$color-accent-hover: #D97B2E; // кнопка при наведении
+$color-text: #14213D;        // основной текст и заголовки
+$color-text-muted: #4A5A78;  // второстепенный текст в карточках
+$color-card-bg: #FFFFFF;     // фон карточки
+$color-divider: #E0D6A6;     // линия-разделитель перед подвалом
+$color-border: #D8CC94;      // рамка иконок соцсетей
+
+// Палитра для карточек
+$card-palette: #F4D35E, #EE964B, #F95738, #0D3B66, #14213D;
+
+$primary: $color-header-bg;   // кнопка Подробнее
+$secondary: $color-accent;    // кнопка Загрузить
+$body-bg: $color-bg;          // фон страницы
+$body-color: $color-text;     // цвет текста
+$card-bg: $color-card-bg;     // фон карточек
+$card-border-width: 0;
+$card-border-radius: 10px;    // скругление карточек
+$border-radius: 6px;          // скругление кнопок
+$font-family-sans-serif: "Segoe UI", Arial, sans-serif;
+
+// брейкпоинты
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px,
+  xxxl: 1500px
+);
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1320px,
+  xxxl: 1460px
+);
