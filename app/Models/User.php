@@ -43,6 +43,15 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
         ];
+    }
+
+    // Города, которые добавил пользователь (связь «один ко многим»)
+    // $user->cities — список его городов (без удалённых),
+    // $user->cities()->withTrashed() — вместе с мягко удалёнными
+    public function cities()
+    {
+        return $this->hasMany(City::class);
     }
 }

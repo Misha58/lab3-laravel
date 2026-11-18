@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\City;
+use App\Models\User;
 use App\Services\ImageService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Http;
@@ -13,11 +14,20 @@ class CitySeeder extends Seeder
     // Запускается командой php artisan db:seed (или migrate --seed)
     public function run(ImageService $images): void
     {
-        foreach ($this->cities() as $data) {
+        // города раздаём пользователям по очереди: 1-й город первому, 2-й второму и т.д.
+        $users = User::orderBy('id')->get();
+
+        foreach ($this->cities() as $i => $data) {
             $data['image'] = $this->downloadImage($images, $data['image'], $data['name_pt'], $data['color']);
             unset($data['color']);
-            City::create($data);
-            $this->command->info("Добавлен город: {$data['name']}");
+
+            $city = new City($data);
+            // user_id нет в $fillable, поэтому задаём его отдельно
+            $city->user_id = $users->isEmpty() ? null : $users[$i % $users->count()]->id;
+            $city->save();
+
+            $owner = $city->user?->name ?? 'без владельца';
+            $this->command->info("Добавлен город: {$data['name']} ({$owner})");
         }
     }
 
