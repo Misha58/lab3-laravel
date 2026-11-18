@@ -17,8 +17,7 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    // Правила доступа (Gates). В Laravel 11+ нет AuthServiceProvider,
-    // поэтому правила описываем здесь. Используются в контроллере и в шаблонах (@can).
+    // Правила доступа (Gates)
     public function boot(): void
     {
         // изменять и удалять город может его владелец или администратор
