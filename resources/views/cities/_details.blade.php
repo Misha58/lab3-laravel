@@ -15,6 +15,11 @@
   <small class="text-muted d-block mt-3">← → — переключение между городами</small>
 </div>
 <div class="modal-footer">
-  <a href="{{ route('cities.edit', $city) }}" class="btn btn-outline-secondary"><i class="fa-solid fa-pen me-1"></i>Редактировать</a>
+  {{-- кнопка видна только автору и администратору (у удалённого города редактирования нет) --}}
+  @if (! $city->trashed())
+    @can('modify-object', $city)
+      <a href="{{ route('cities.edit', $city) }}" class="btn btn-outline-secondary"><i class="fa-solid fa-pen me-1"></i>Редактировать</a>
+    @endcan
+  @endif
   <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Закрыть</button>
 </div>

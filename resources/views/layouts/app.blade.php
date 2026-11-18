@@ -27,10 +27,43 @@
               <a class="nav-link {{ request()->routeIs('cities.index') ? 'active' : '' }}" href="{{ route('cities.index') }}">Города</a>
             </li>
             <li class="nav-item">
-              <a class="btn-cta d-inline-block text-decoration-none" href="{{ route('cities.create') }}">
-                <i class="fa-solid fa-plus me-1"></i>Добавить
-              </a>
+              <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">Пользователи</a>
             </li>
+
+            @auth
+              {{-- вошедший пользователь: свои города, профиль, выход --}}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('users.cities', Auth::user()) }}">Мои города</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('profile.edit') }}" title="Профиль">
+                  <i class="fa-solid fa-user me-1"></i>{{ Auth::user()->name }}
+                  @if (Auth::user()->is_admin)
+                    <span class="badge text-bg-warning ms-1">админ</span>
+                  @endif
+                </a>
+              </li>
+              <li class="nav-item">
+                <form method="POST" action="{{ route('logout') }}">
+                  @csrf
+                  <button type="submit" class="nav-link btn btn-link">Выйти</button>
+                </form>
+              </li>
+              {{-- кнопку «Добавить» видят только вошедшие --}}
+              <li class="nav-item">
+                <a class="btn-cta d-inline-block text-decoration-none" href="{{ route('cities.create') }}">
+                  <i class="fa-solid fa-plus me-1"></i>Добавить
+                </a>
+              </li>
+            @else
+              {{-- гость: вход и регистрация (страницы Breeze) --}}
+              <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('login') ? 'active' : '' }}" href="{{ route('login') }}">Войти</a>
+              </li>
+              <li class="nav-item">
+                <a class="btn-cta d-inline-block text-decoration-none" href="{{ route('register') }}">Регистрация</a>
+              </li>
+            @endauth
           </ul>
         </div>
       </div>
