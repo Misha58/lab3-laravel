@@ -2,24 +2,48 @@
 
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Главная страница сразу ведёт на список городов
 Route::redirect('/', '/cities');
 
-// Ресурсный маршрут: 7 путей cities.* (как в ЛР3)
-Route::resource('cities', CityController::class);
-
 // После входа Breeze отправляет на dashboard — у нас это список городов
 Route::get('/dashboard', fn () => redirect()->route('cities.index'))
     ->middleware('auth')->name('dashboard');
 
-// Профиль пользователя (из Breeze), только после входа
+// ---------- ТОЛЬКО ДЛЯ ВОШЕДШИХ ПОЛЬЗОВАТЕЛЕЙ (middleware auth) ----------
+// Гость при попытке открыть эти адреса попадёт на страницу входа /login
 Route::middleware('auth')->group(function () {
+    // GET    /cities/create       cities.create   -> create
+    // POST   /cities              cities.store    -> store
+    // GET    /cities/{city}/edit  cities.edit     -> edit
+    // PUT    /cities/{city}       cities.update   -> update
+    // DELETE /cities/{city}       cities.destroy  -> destroy  (мягкое удаление)
+    Route::resource('cities', CityController::class)->except(['index', 'show']);
+
+    // действия администратора с удалёнными городами (по id, т.к. модель удалена)
+    Route::post('/cities/{id}/restore', [CityController::class, 'restore'])
+        ->whereNumber('id')->name('cities.restore');
+    Route::delete('/cities/{id}/purge', [CityController::class, 'purge'])
+        ->whereNumber('id')->name('cities.purge');
+
+    // профиль пользователя (из Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Маршруты входа, регистрации, сброса пароля (из Breeze): /login, /register, ...
+// ---------- ДОСТУПНО ВСЕМ ----------
+// GET /cities         cities.index -> index
+// GET /cities/{city}  cities.show  -> show  (withTrashed — чтобы владелец и админ могли открыть удалённый)
+Route::resource('cities', CityController::class)->only(['index', 'show'])->withTrashed(['show']);
+
+// список пользователей
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+// города одного пользователя; {user:name} — ищем пользователя по имени, а не по id
+Route::get('/users/{user:name}/cities', [CityController::class, 'index'])->name('users.cities');
+
+// маршруты входа, регистрации, сброса пароля (из Breeze): /login, /register, ...
 require __DIR__.'/auth.php';
