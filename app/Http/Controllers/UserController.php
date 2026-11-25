@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 // Список пользователей сайта
 class UserController extends Controller
@@ -13,8 +14,12 @@ class UserController extends Controller
         $users = User::withCount([
             'cities',                                                          // обычные города
             'cities as trashed_count' => fn ($query) => $query->onlyTrashed(), // мягко удалённые
+            'friends',                                                         // сколько друзей
         ])->orderBy('name')->get();
 
-        return view('users.index', compact('users'));
+        // id моих друзей — чтобы показать кнопку «Добавить» или «Удалить из друзей»
+        $friendIds = Auth::user()?->friends()->pluck('users.id') ?? collect();
+
+        return view('users.index', compact('users', 'friendIds'));
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FriendController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +29,15 @@ Route::middleware('auth')->group(function () {
         ->whereNumber('id')->name('cities.restore');
     Route::delete('/cities/{id}/purge', [CityController::class, 'purge'])
         ->whereNumber('id')->name('cities.purge');
+
+    // отзывы: добавить к любому городу, удалить (автор отзыва или админ)
+    Route::post('/cities/{city}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
+    // друзья: добавить / удалить (по имени пользователя) и лента новых городов от друзей
+    Route::post('/users/{user:name}/friend', [FriendController::class, 'store'])->name('friends.store');
+    Route::delete('/users/{user:name}/friend', [FriendController::class, 'destroy'])->name('friends.destroy');
+    Route::get('/feed', [FriendController::class, 'feed'])->name('feed');
 
     // профиль пользователя (из Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

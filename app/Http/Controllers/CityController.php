@@ -37,11 +37,13 @@ class CityController extends Controller
             $query->withTrashed();
         }
 
-        $cities = $query->with('user')->orderBy('name')->get();
+        $cities = $query->with('user')->withCount('comments')->orderBy('name')->get();
 
         return view('cities.index', [
-            'cities' => $cities,
-            'owner'  => $user, // null — значит смотрим всех
+            'cities'   => $cities,
+            'owner'    => $user, // null — значит смотрим всех
+            // дружу ли я с владельцем страницы — для кнопки «В друзья»
+            'isFriend' => $me && $user && $me->isFriendWith($user),
         ]);
     }
 
@@ -76,7 +78,11 @@ class CityController extends Controller
 
         $view = $request->ajax() ? 'cities._details' : 'cities.show';
 
-        return view($view, compact('city'));
+        // отзывы вместе с авторами; id моих друзей — для подсветки их отзывов
+        $city->load('comments.user');
+        $friendIds = Auth::user()?->friends()->pluck('users.id') ?? collect();
+
+        return view($view, compact('city', 'friendIds'));
     }
 
     // GET /cities/{city}/edit — форма редактирования (та же, что и для добавления)
