@@ -24560,4 +24560,21 @@ textarea.form-control-lg {
   border-top: 4px solid #EE964B;
 }
 
+.comment {
+  border-left: 4px solid #E0D6A6;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+}
+.comment--friend {
+  border-left-color: #2E9E5B;
+  background: rgba(46, 158, 91, 0.08);
+}
+
+.feed-photo {
+  -o-object-fit: cover;
+     object-fit: cover;
+  min-height: 120px;
+}
+
 /*# sourceMappingURL=main.css.map*/

@@ -6,7 +6,9 @@
   {{-- $owner — пользователь, чьи города смотрим; null — города всех пользователей --}}
   @if ($owner)
     <p class="mt-4 mb-0"><a href="{{ route('users.index') }}"><i class="fa-solid fa-arrow-left me-1"></i>Все пользователи</a></p>
-    <h1 class="mt-2">Города пользователя {{ $owner->name }}</h1>
+    <h1 class="mt-2 d-flex flex-wrap align-items-center gap-3">Города пользователя {{ $owner->name }}
+      @include('users._friend_button', ['user' => $owner, 'isFriend' => $isFriend])
+    </h1>
   @else
     <h1>Города Португалии</h1>
   @endif
@@ -48,6 +50,7 @@
               @else
                 неизвестно
               @endif
+              · <a href="{{ route('cities.show', $city) }}#comments" class="text-muted"><i class="fa-solid fa-comments me-1"></i>{{ $city->comments_count }}</a>
             </p>
             <div class="mt-auto pt-2 d-flex flex-wrap gap-2">
               <!-- «Подробнее»: действие show, открывается в модальном окне -->

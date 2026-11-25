@@ -38,4 +38,7 @@
       </div>
     </div>
   </div>
+
+  {{-- отзывы о городе (вспомогательная сущность) --}}
+  @include('cities._comments')
 @endsection

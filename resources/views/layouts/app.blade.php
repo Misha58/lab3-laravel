@@ -33,6 +33,9 @@
             @auth
               {{-- вошедший пользователь: свои города, профиль, выход --}}
               <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('feed') ? 'active' : '' }}" href="{{ route('feed') }}">Лента</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="{{ route('users.cities', Auth::user()) }}">Мои города</a>
               </li>
               <li class="nav-item">

@@ -211,3 +211,23 @@
 .city-details {
   border-top: 4px solid $color-accent;
 }
+
+// отзыв о городе
+.comment {
+  border-left: 4px solid $color-divider;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+
+  // отзыв от друга — зелёная полоса и фон
+  &--friend {
+    border-left-color: #2E9E5B;
+    background: rgba(46, 158, 91, 0.08);
+  }
+}
+
+// фото в ленте
+.feed-photo {
+  object-fit: cover;
+  min-height: 120px;
+}

@@ -12,7 +12,14 @@
       @include('cities._info')
     </div>
   </div>
-  <small class="text-muted d-block mt-3">← → — переключение между городами</small>
+  {{-- отзывы целиком — на странице города --}}
+  <p class="mt-3 mb-0">
+    <a href="{{ route('cities.show', $city) }}#comments"><i class="fa-solid fa-comments me-1"></i>Отзывы ({{ $city->comments->count() }})</a>
+    @if ($city->comments->contains(fn ($c) => $friendIds->contains($c->user_id)))
+      <span class="badge text-bg-success ms-1"><i class="fa-solid fa-user-group me-1"></i>есть от друзей</span>
+    @endif
+  </p>
+  <small class="text-muted d-block mt-2">← → — переключение между городами</small>
 </div>
 <div class="modal-footer">
   {{-- кнопка видна только автору и администратору (у удалённого города редактирования нет) --}}
