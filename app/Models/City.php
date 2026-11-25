@@ -34,6 +34,12 @@ class City extends Model
         return $this->belongsTo(User::class);
     }
 
+    // Отзывы о городе (связь «один ко многим»), новые сверху: $city->comments
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->latest();
+    }
+
     // ---------- ПРОВЕРКА ПРАВ НА УРОВНЕ МОДЕЛИ (события Eloquent) ----------
     // Эти функции срабатывают прямо перед SQL-запросом, поэтому защищают данные
     // из любого места программы, даже если в контроллере проверку забыли.

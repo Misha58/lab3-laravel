@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call(CitySeeder::class);
+        $this->call(CommentSeeder::class); // друзья и отзывы (ЛР5)
     }
 }
